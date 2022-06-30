@@ -1,5 +1,6 @@
+# Pytorch-Birdsong-Classification
 
-# Project Structure
+## Project Structure
 
 ```(python)
 < pytorch-birdsong-classification >
@@ -19,7 +20,7 @@
           |
           |- preprocessing
           |   |- audio.py                  // Reduce noise
-          |   |- data_split.py             // Split data to AE-train,test and AEC-train, validate, test
+          |   |- data_split.py             // Split data
           |   |- label.py                  // Generate label from self-labeled data
           |
           |- utils
