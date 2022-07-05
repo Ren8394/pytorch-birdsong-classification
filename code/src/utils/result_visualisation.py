@@ -4,8 +4,6 @@ import librosa.display
 import matplotlib.pyplot as plt
 import pandas as pd
 import sys
-import threading
-import time
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -42,18 +40,18 @@ def showMelSpec(filePath, st:float, et:float):
     mel * (2**31), sr=sr,
     time_constant=pcenTime, gain=pcenGain, bias=pcenBias, power=pcenPower
   )
-  fig, ax = plt.subplots(1, 1, figsize=(6, 6))
+  fig, ax = plt.subplots(figsize=(6, 6))
   librosa.display.specshow(
     image, y_axis='linear', x_axis='time',
     sr=sr, ax=ax, fmin=1000, fmax=10000
   )
   ax.set_title(audioPath.name + f'    {st} ~ {et}')
-  plt.show()
+  plt.show(block=False)
 
 def playAudio(filePath, st:float, et:float):
   audioPath = Path.cwd().joinpath('data', 'raw', filePath)
   audio = AudioSegment.from_file(str(audioPath))
-  audio = audio[st*1000:et*1000]
+  audio = audio[st*1000:(st+1)*1000]
   play(audio)
 
 def findPeaks(df:pd.DataFrame):
@@ -121,14 +119,14 @@ def ResultCorrectVisualsation():
     print(f'\033[1;31;43m {predict} \033[0;0m')    
 
     ### Play audio and show spectrogram repeatly
-    repeat = True
-    while repeat:
-      playAudio(
+    showMelSpec(
         filePath = resProbDF.loc[peakIndex, 'file'], 
         st = resProbDF.loc[peakIndex, 'st'], 
         et = resProbDF.loc[peakIndex, 'et']
-      )
-      showMelSpec(
+    )
+    repeat = True
+    while repeat:
+      playAudio(
         filePath = resProbDF.loc[peakIndex, 'file'], 
         st = resProbDF.loc[peakIndex, 'st'], 
         et = resProbDF.loc[peakIndex, 'et']

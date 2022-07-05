@@ -9,7 +9,8 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path.cwd().joinpath('code')))
 from scipy.signal import find_peaks
-from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, fbeta_score
+from scipy.stats import pearsonr
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, fbeta_score, r2_score
 from tqdm import tqdm
 
 from src.utils.utils import GetSortedSpeciesCode
@@ -18,6 +19,34 @@ from src.utils.utils import GetSortedSpeciesCode
 TARGET_SPECIES = GetSortedSpeciesCode()
 
 # -------------
+def findBestR(pDF:pd.DataFrame, lDF:pd.DataFrame):
+  thres = np.arange(0, 1, 0.05)
+  maxRDict = {sp:0 for sp in TARGET_SPECIES}
+  spRDict = collections.defaultdict(list)
+  for th in thres:
+    thresDF = pd.DataFrame(columns=['file']+[s+'(P)' for s in TARGET_SPECIES]+TARGET_SPECIES)
+    for i, f in tqdm(
+      enumerate(pDF['file'].unique()), total=pDF['file'].unique().shape[0],
+      desc=f'Threshold = {th:>.2f}',
+      bar_format='{l_bar}{bar:32}{r_bar}{bar:-32b}'
+    ):
+      thresDF.loc[i, 'file'] = f
+      thresDF.loc[i, TARGET_SPECIES] = lDF.loc[lDF['file'] == Path(f), TARGET_SPECIES].iloc[0, :].to_list()
+      for sp in TARGET_SPECIES:
+        peaks, _ = find_peaks(pDF.loc[pDF['file'] == f, f'{sp}(P)'], height=th)
+        thresDF.loc[thresDF['file'] == f, f'{sp}(P)'] = len(peaks)
+    thresDF.fillna(0, inplace=True)
+    
+    for sp in TARGET_SPECIES:
+      r, _ = pearsonr(
+        x=thresDF[sp],
+        y=thresDF[f'{sp}(P)']
+      )
+      spRDict[sp].append([th, r])
+      if maxRDict[sp] < r:
+        maxRDict[sp] = r
+  return maxRDict, spRDict
+
 def findThreshold(pDF:pd.DataFrame, lDF:pd.DataFrame):
   thres = np.arange(0, 1, 0.05)
   maxThresDict = {sp:(0, 0, 0, 0, 0) for sp in TARGET_SPECIES}
@@ -143,6 +172,19 @@ def visualiseThreshold(tDict:dict):
     axs[i].set_title(sp)
   plt.savefig(Path.cwd().joinpath('thres.png'))
 
+def visualiseR(rDict:dict, maxDict:dict):
+  _, axs = plt.subplots(3, 3, figsize=(12, 12), tight_layout=True)
+  axs = axs.flatten()
+  for i, sp in enumerate(TARGET_SPECIES):
+    scoreList = rDict[sp]
+    thres = [s[0] for s in scoreList]
+    r = [s[1] for s in scoreList]
+    axs[i].set_ylim(0, 1)
+    axs[i].set_xlim(0, 1)
+    axs[i].plot(thres, r, 'b-')
+    axs[i].set_title(f'{sp} Best r: {maxDict[sp]:.3f}')
+  plt.savefig(Path.cwd().joinpath('thres-r.png')) 
+
 def ThresholdTest():
   sLabelPaths = sorted(Path.cwd().joinpath('data', 'raw', 'Label').glob('*.txt'))
   countDF = countFileLabels(sLabelPaths)
@@ -154,6 +196,9 @@ def ThresholdTest():
   maxThresDict, spThresDict = findThreshold(predictDF, countDF)
   visualiseConfusionMatrix(predictDF, countDF, maxThresDict)
   visualiseThreshold(spThresDict)
+
+  maxRDict, spRDict = findBestR(predictDF, countDF)
+  visualiseR(spRDict, maxRDict)
 
 # -------------
 if __name__ == '__main__':
