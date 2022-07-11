@@ -18,7 +18,7 @@ from src.utils.utils import GetSortedSpeciesCode
 
 # -------------
 TARGET_SPECIES = GetSortedSpeciesCode()
-THRESHOLD = [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
+THRESHOLD = [0.26, 0.27, 0.41, 0.30, 0.45, 0.39, 0.43, 0.21, 0.36]
 WIN_LEN = 1.0
 OVERLAP = 0.75
 HOP_LEN = WIN_LEN * (1 - OVERLAP)
