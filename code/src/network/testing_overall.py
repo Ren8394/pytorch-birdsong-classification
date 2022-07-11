@@ -14,7 +14,7 @@ from tkinter import *
 from tkinter.filedialog import askopenfilename
 from tqdm import tqdm
 
-from src.network.network import AutoEncodeClassifer
+from src.network.network import AutoEncoderClassifer
 from src.network.dataset import BirdsongDataset
 from src.utils.utils import GetSortedSpeciesCode
 
@@ -54,7 +54,7 @@ def resultsVisualisation(predicts, actuals):
       y_true=trueLabels, y_pred=predLabels,
       target_names=TARGET_SPECIES, zero_division=0, output_dict=True
     )
-  
+
   ## F1, Precision, and Recall
   f1 = dict((specie, []) for specie in TARGET_SPECIES)
   precision = dict((specie, []) for specie in TARGET_SPECIES)
@@ -66,6 +66,7 @@ def resultsVisualisation(predicts, actuals):
         precision[k].append(v['precision'])
         recall[k].append(v['recall'])
 
+
   ## Plot
   thresList = list(np.around(np.arange(0, 0.95, 0.01), decimals=2))
   fig, axs = plt.subplots(
@@ -73,18 +74,21 @@ def resultsVisualisation(predicts, actuals):
     figsize=(12, 12), tight_layout=True
   )
   axs = axs.flatten()
-  for k, v in f1.items():
-    axs[TARGET_SPECIES.index(k)].set_ylim(0, 1.01)
-    axs[TARGET_SPECIES.index(k)].plot(thresList, v, 'b-')
-    axs[TARGET_SPECIES.index(k)].set_title(k)
   for k, v in precision.items():
-    axs[TARGET_SPECIES.index(k)].set_ylim(0, 1.01)
+    axs[TARGET_SPECIES.index(k)].set_ylim(0, 1)
+    axs[TARGET_SPECIES.index(k)].set_xlim(0, 1)
     axs[TARGET_SPECIES.index(k)].plot(thresList, v, 'r-')
     axs[TARGET_SPECIES.index(k)].set_title(k)
   for k, v in recall.items():
-    axs[TARGET_SPECIES.index(k)].set_ylim(0, 1.01)
+    axs[TARGET_SPECIES.index(k)].set_ylim(0, 1)
+    axs[TARGET_SPECIES.index(k)].set_xlim(0, 1)
     axs[TARGET_SPECIES.index(k)].plot(thresList, v, 'k-')
     axs[TARGET_SPECIES.index(k)].set_title(k)
+  for k, v in f1.items():
+    axs[TARGET_SPECIES.index(k)].set_ylim(0, 1)
+    axs[TARGET_SPECIES.index(k)].set_xlim(0, 1)
+    axs[TARGET_SPECIES.index(k)].plot(thresList, v, 'b-')
+    axs[TARGET_SPECIES.index(k)].set_title(f'{k} \nMax F1 ({np.max(v):.2f}) Threshold: {thresList[np.argmax(v)]}')
   plt.savefig(Path.cwd().joinpath('report.png'))
 
 def ExcuteOverallTestingProcess():
@@ -95,7 +99,7 @@ def ExcuteOverallTestingProcess():
   root.destroy()
 
   ## model
-  model = AutoEncodeClassifer(numberOfClass=len(TARGET_SPECIES)).to(DEVICE)
+  model = AutoEncoderClassifer(numberOfClass=len(TARGET_SPECIES)).to(DEVICE)
   model.load_state_dict(
     torch.load(WeightPath, map_location=torch.device(DEVICE))
   )

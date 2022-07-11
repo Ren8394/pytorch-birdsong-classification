@@ -19,12 +19,12 @@ from tkinter.filedialog import askopenfilenames, askopenfilename
 from tqdm import tqdm
 
 from src.network.dataset import BirdsongDataset
-from src.network.network import AutoEncodeClassifer
+from src.network.network import AutoEncoderClassifer
 from src.utils.utils import GetSortedSpeciesCode
 
 # -------------
 TARGET_SPECIES = GetSortedSpeciesCode()
-THRESHOLD = [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
+THRESHOLD = [0.26, 0.27, 0.41, 0.30, 0.45, 0.39, 0.43, 0.21, 0.36]
 WIN_LEN = 1.0
 OVERLAP = 0.75
 HOP_LEN = WIN_LEN * (1 - OVERLAP)
@@ -101,11 +101,13 @@ def concatToLabel(file, peakDict):
     dfDict['end time'] = peakIndex * HOP_LEN + WIN_LEN
     dfList.append(dfDict)
   df = pd.DataFrame.from_records(dfList)
+  df.sort_values(by=['file', 'start time', 'end time'], inplace=True)
   labelDF = pd.concat([labelDF, df], ignore_index=True)
   labelDF.fillna(0, inplace=True)
   colnames = list(labelDF.columns)
   colnames = colnames[3:]
   labelDF = labelDF[(labelDF[colnames] != 0).any(axis=1)]
+  labelDF.drop_duplicates(subset=['file', 'start time', 'end time'], inplace=True)
   labelDF.to_csv(Path.cwd().joinpath('data', 'LABEL.csv'), header=True, index=False)
 
 def AutoLabel():
@@ -115,7 +117,7 @@ def AutoLabel():
   audioPaths = askopenfilenames(
     title='Select Audio Files: ',
     initialdir=Path.cwd().joinpath('data'),
-    filetypes=(('Audio files', '*.wav, *.mp3'))
+    filetypes=(('Audio files', '*.mp3, *.wav'))
   )
   weightPath = askopenfilename(
     title='Select Model Weight File', 
@@ -126,7 +128,7 @@ def AutoLabel():
   root.destroy()
 
   ## model
-  model = AutoEncodeClassifer(numberOfClass=len(TARGET_SPECIES)).to(DEVICE)
+  model = AutoEncoderClassifer(numberOfClass=len(TARGET_SPECIES)).to(DEVICE)
   model.load_state_dict(
     torch.load(weightPath, map_location=torch.device(DEVICE))
   )

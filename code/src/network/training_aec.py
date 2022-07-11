@@ -11,7 +11,7 @@ from tkinter import *
 from tkinter.filedialog import askopenfilename
 from tqdm import tqdm, trange
 
-from src.network.network import AutoEncodeClassifer
+from src.network.network import AutoEncoderClassifer
 from src.network.dataset import BirdsongDataset
 from src.utils.utils import CalculateImbalanceWeight, GetSortedSpeciesCode
 
@@ -92,7 +92,7 @@ def ExcuteAECTrainingProcess():
   imbalanceWeight = 'ens'
 
   ## Create model and freeze encoder layers 
-  model = AutoEncodeClassifer(numberOfClass=len(TARGET_SPECIES)).to(DEVICE)
+  model = AutoEncoderClassifer(numberOfClass=len(TARGET_SPECIES)).to(DEVICE)
   model.encoder.load_state_dict(
     torch.load(encoderWeightPath, map_location=DEVICE)
   )

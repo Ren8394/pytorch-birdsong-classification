@@ -16,7 +16,7 @@ from torch.utils.data import DataLoader
 from tkinter import *
 from tkinter.filedialog import askopenfilename
 
-from src.network.network import AutoEncodeClassifer
+from src.network.network import AutoEncoderClassifer
 from src.network.dataset import BirdsongDataset
 from src.utils.utils import GetSortedSpeciesCode
 
@@ -70,7 +70,7 @@ def ExcuteSingleTestingProcess():
   root.destroy()
 
   ## model
-  model = AutoEncodeClassifer(numberOfClass=len(TARGET_SPECIES)).to(DEVICE)
+  model = AutoEncoderClassifer(numberOfClass=len(TARGET_SPECIES)).to(DEVICE)
   model.load_state_dict(
     torch.load(weightPath, map_location=torch.device(DEVICE))
   )

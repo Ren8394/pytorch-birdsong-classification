@@ -87,9 +87,9 @@ class AutoEncoder(nn.Module):
     return codes, outputs
 
 # AE + Classifier
-class AutoEncodeClassifer(nn.Module):
+class AutoEncoderClassifer(nn.Module):
   def __init__(self, numberOfClass:int) -> None:
-    super(AutoEncodeClassifer, self).__init__()
+    super(AutoEncoderClassifer, self).__init__()
     self.encoder = Encoder()
     self.classifier = nn.Sequential(
       nn.Linear(in_features=1024, out_features=1024, bias=True),
@@ -106,5 +106,5 @@ class AutoEncodeClassifer(nn.Module):
 if __name__ == '__main__':
   ae = AutoEncoder()
   summary(ae, input_size=(16, 3, 128, 128))
-  aeClassifier = AutoEncodeClassifer(9)
+  aeClassifier = AutoEncoderClassifer(9)
   summary(aeClassifier, input_size=(16, 3, 128, 128))
