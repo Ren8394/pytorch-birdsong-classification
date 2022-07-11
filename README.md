@@ -7,6 +7,7 @@
   |
   |- assets                                // Image
   |- qml                                   // Qml file for GUI (*TODO)
+  |- model                                 // Model Weight
   |- code           
       |- app.py                            // Execute for sigle file testing
       |- src
