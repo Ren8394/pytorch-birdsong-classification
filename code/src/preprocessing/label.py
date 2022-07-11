@@ -138,10 +138,10 @@ def aeType(filePaths:Path):
   ae = []
   for filePath in tqdm(filePaths, bar_format='{l_bar}{bar:32}{r_bar}{bar:-32b}'):
     tempDF = pd.DataFrame(columns=['file', 'start time', 'end time'])
-    source = sf.SoundFile(Path.cwd().joinpath('data', 'raw', 'Audio', f'{filePath.stem}.wav'))
+    source = sf.SoundFile(Path.cwd().joinpath('data', 'raw', 'NrAudio', f'{filePath.stem}.wav'))
     tempSts = audioTimeSegment(source.frames / source.samplerate)
     for tempSt in tempSts:
-      ae.append([Path('Audio', f'{filePath.stem}.wav'), tempSt, tempSt+WIN_LEN])
+      ae.append([Path('NrAudio', f'{filePath.stem}.wav'), tempSt, tempSt+WIN_LEN])
       
   aeDF = pd.DataFrame(ae, columns=['file', 'start time', 'end time'])
   return aeDF
@@ -150,7 +150,7 @@ def aeType(filePaths:Path):
 def ConcatLabel():
   sLabelPaths = sorted(Path.cwd().joinpath('data', 'raw', 'Label').glob('*.txt'))
   oLabelPaths = sorted(Path.cwd().joinpath('data', 'raw', 'Opensource').glob('*.txt'))
-  audioFilePaths = sorted(Path.cwd().joinpath('data', 'raw', 'Audio').glob('*.wav'))
+  audioFilePaths = sorted(Path.cwd().joinpath('data', 'raw', 'NrAudio').glob('*.wav'))
   segDF = labelType(sLabelPaths + oLabelPaths)
   aeDF = aeType(audioFilePaths)
   segDF.to_csv(Path.cwd().joinpath('data', 'LABEL_SEG.csv'), header=True, index=False)

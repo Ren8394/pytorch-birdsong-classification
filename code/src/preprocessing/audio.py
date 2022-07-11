@@ -21,6 +21,7 @@ def noiseReduction(filePaths:Path):
       Path.cwd().joinpath('data', 'raw', 'NrAudio', f'{filePath.stem}.wav'),
       audio, sr, 'PCM_24'
     )
+    Path.unlink(filePath)
 
 def concatAudio(filePaths:Path, labeledFilePaths:Path):
   df = pd.DataFrame(columns=['file', 'labeled', 'station', 'date', 'record time'])
@@ -28,7 +29,7 @@ def concatAudio(filePaths:Path, labeledFilePaths:Path):
     labelFunc = lambda x, y: True if x in y else False # Check the file labled or not
     df = pd.concat(
       [df, pd.DataFrame({
-        'file': Path('Audio', filePath.name),
+        'file': Path('NrAudio', filePath.name),
         'labeled': labelFunc(filePath, labeledFilePaths),
         'station': str(filePath.stem).split('_')[0],
         'date': datetime.strptime((filePath.stem).split('_')[1], '%Y%m%d').date(),
@@ -38,22 +39,23 @@ def concatAudio(filePaths:Path, labeledFilePaths:Path):
   return df
 
 def ReduceAudioNoise():
-  ## Labeled audio > noise-reduced audio
-  ## Same as labeled open-source audio
-  sLabeledAudioPaths = list(map(
-    lambda x: sorted(Path.cwd().joinpath('data', 'raw', 'Audio').glob(f'*{x.stem}*'))[0],
+  ## Self-record audio noise reduction
+  sAudioPaths = sorted(Path.cwd().joinpath('data', 'raw', 'Audio').glob('*.wav'))
+  noiseReduction(sAudioPaths )
+
+  sLabeledNrAudioPaths = list(map(
+    lambda x: sorted(Path.cwd().joinpath('data', 'raw', 'NrAudio').glob(f'*{x.stem}*'))[0],
     sorted(Path.cwd().joinpath('data', 'raw', 'Label').glob('*.txt'))
   ))
+  sNrAudioPaths = sorted(Path.cwd().joinpath('data', 'raw', 'NrAudio').glob('*.wav'))
+  audioDF = concatAudio(sNrAudioPaths, sLabeledNrAudioPaths)
+  audioDF.to_csv(Path.cwd().joinpath('data', 'AUDIO.csv'), header=True, index=False)
+
   oLabeledAudioPaths = list(map(
     lambda x: sorted(Path.cwd().joinpath('data', 'raw', 'Opensource').glob(f'*{x.stem}*'))[0],
     sorted(Path.cwd().joinpath('data', 'raw', 'Opensource').glob('*.txt'))
   ))
-  noiseReduction(sLabeledAudioPaths + oLabeledAudioPaths)
-
-  ## Self-record audio
-  sAudioPaths = sorted(Path.cwd().joinpath('data', 'raw', 'Audio').glob('*.wav'))
-  audioDF = concatAudio(sAudioPaths, sLabeledAudioPaths)
-  audioDF.to_csv(Path.cwd().joinpath('data', 'AUDIO.csv'), header=True, index=False)
+  noiseReduction(oLabeledAudioPaths)
 
 # -------------
 if __name__ == '__main__':

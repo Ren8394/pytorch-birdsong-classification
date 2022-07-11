@@ -59,9 +59,7 @@ def dataSplitAE():
 def testAppData():
   aeDF = pd.read_csv(Path.cwd().joinpath('data', 'LABEL_AE.csv'), header=0)
   segDF = pd.read_csv(Path.cwd().joinpath('data', 'LABEL_SEG.csv'), header=0)
-  fnames = ['Audio/'+p.split('/')[1] for p in segDF['file'].unique()]
-  appDF = aeDF.loc[aeDF['file'].isin(fnames), :].copy()
-  appDF['file'] = appDF['file'].apply(lambda x: Path('NrAudio', x.split('/')[1]))
+  appDF = aeDF.loc[aeDF['file'].isin(segDF['file']), :].copy()
   appDF['code'] = [[0] * len(TARGET_SPECIES)] * appDF.shape[0]
   appDF.to_csv(Path.cwd().joinpath('data', 'app_test.csv'), header=True, index=False)
 
