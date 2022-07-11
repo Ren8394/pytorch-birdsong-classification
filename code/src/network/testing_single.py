@@ -62,6 +62,11 @@ def noiseReduce(filePath):
 
 def ExcuteSingleTestingProcess():
   ## Setting
+  """
+    1. 選擇 model weight
+    2. 選擇測試音檔
+    3. 音檔降噪存回 NrAudio
+  """
   root = Tk()
   root.withdraw()
   weightPath = askopenfilename(title='Choose The File Of Model Weight', initialdir=Path.cwd().joinpath('model'))

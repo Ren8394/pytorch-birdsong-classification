@@ -132,6 +132,9 @@ def visualiseConfusionMatrix(pDF:pd.DataFrame, lDF:pd.DataFrame, maxDict:dict):
   plt.savefig(Path.cwd().joinpath('cm-acc.png'))
 
 def countFileLabels(filePaths:Path):
+  """
+    計算每一物種標籤數
+  """
   countDF = pd.DataFrame(columns=['file']+TARGET_SPECIES)
   for i, filePath in enumerate(filePaths):
     countDF.loc[i, 'file'] = Path('NrAudio', f'{filePath.stem}.wav')

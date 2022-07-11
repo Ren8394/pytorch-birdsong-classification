@@ -18,12 +18,14 @@ from src.utils.utils import CalculateImbalanceWeight, GetSortedSpeciesCode
 # -------------
 TARGET_SPECIES = GetSortedSpeciesCode()
 
+# 確定可跑訓練裝置 CPU 或 GPU
 if torch.cuda.is_available():
   DEVICE = torch.device('cuda:0')
   torch.backends.cudnn.benchmark = True
 else:
   DEVICE = torch.device('cpu')
 
+# 設定 Imbalance Weight
 IMBALANCE_WEIGHT = CalculateImbalanceWeight(
   Path.cwd().joinpath('data', 'aec_train.csv'), weightType='ens'
 )
@@ -77,6 +79,8 @@ def validate(model, dataloader):
 
 def ExcuteAECTrainingProcess():
   ## Setting
+  ## {encoderWeightPath} encoder weight 檔案
+  ## {modelFile} model 儲存檔名
   root = Tk()
   root.withdraw()
   encoderWeightPath = askopenfilename(title='Choose The File Of Encoder Weight', initialdir=Path.cwd().joinpath('model'))
@@ -89,7 +93,6 @@ def ExcuteAECTrainingProcess():
   learningRate = 0.001
   epochs = 250
   earlyStop = 15
-  imbalanceWeight = 'ens'
 
   ## Create model and freeze encoder layers 
   model = AutoEncoderClassifer(numberOfClass=len(TARGET_SPECIES)).to(DEVICE)
@@ -131,7 +134,7 @@ def ExcuteAECTrainingProcess():
 
     ### Print results
     print(f"""
-      >> [{epoch + 1} / {epochs}] ~~ ~~ AutoEncodeClassifer | {imbalanceWeight}
+      >> [{epoch + 1} / {epochs}] ~~ ~~ AutoEncodeClassifer
       >> {"Best V Loss :":>16} {bestLoss} + [{earlyCount}]
       >> {"Current T Loss :":>16} {trainingLoss:6f}
       >> {"Current V Loss :":>16} {validationLoss:6f}

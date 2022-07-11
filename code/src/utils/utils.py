@@ -6,22 +6,44 @@ import torch
 from pathlib import Path
 
 # -------------
+"""
+從 SPECIES.csv 取出目標物種
+"""
 def GetSortedSpeciesCode():
   df = pd.read_csv(Path.cwd().joinpath('data', 'SPECIES.csv'), header=0)
   res = df.loc[df['Target'], 'Code'].tolist()  
   return res
 
+""" (未使用)
+從 STATION.csv 取出測站
+"""
 def GetStationList():
   df = pd.read_csv(Path.cwd().joinpath('data', 'STATION.csv'), header=0)
   res = df['station'].tolist()
   return res
 
+"""
+依照 {source} 將 {target} 進行 One-hot encoding
+e.g. 
+  source = ['A', 'B', 'C']
+  target = 'B'
+  >> onthot = [0, 1, 0]
+"""
 def OneHotEncoding(targets, source):
   onehot = [0] * len(source)
   for t in targets:
     onehot[source.index(t)] = int(1)
   return onehot
 
+""" Imbalance Weight 計算
+1. {filePath} 目標資料集路徑
+2. {weightType} 不同計算方式選擇
+  ins: 倒數
+  isns: 倒數開根號
+  xgboost: xgboost
+  ens: Efficient Number of Samples
+  none: 不設定
+"""
 def CalculateImbalanceWeight(filePath, weightType='ens'):
   df = pd.read_csv(filePath, header=0)
   labels = []

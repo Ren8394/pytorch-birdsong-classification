@@ -10,10 +10,10 @@ from tqdm import tqdm
 from src.utils.utils import GetSortedSpeciesCode
 
 # -------------
-TARGET_SPECIES = GetSortedSpeciesCode()
-WIN_LEN = 1.0
-OVERLAP = 0.75
-HOP_LEN = WIN_LEN * (1 - OVERLAP)
+TARGET_SPECIES = GetSortedSpeciesCode() # 目標物種
+WIN_LEN = 1.0                           # 滑移視窗長度
+OVERLAP = 0.75                          # 滑移視窗重疊比例
+HOP_LEN = WIN_LEN * (1 - OVERLAP)       # 依照滑移視窗與重疊比例計算每次滑移距離
 
 # -------------
 def audioTimeSegment(audioLen):
@@ -21,7 +21,8 @@ def audioTimeSegment(audioLen):
 
 def segment(df:pd.DataFrame):
   """
-  Reference: TBD
+    標籤切割演算法
+    Reference: TBD
   """
   records = []  # start time as L and end time as R, and its index
   labels = []   # label
@@ -53,6 +54,12 @@ def segment(df:pd.DataFrame):
 
 # ------------- Segment
 def labelType(filePaths:Path):
+  """ Classifier
+    1. 篩選 Song 標籤 (*-S, *-S1, ....)
+    2. 依照標籤進行切割 (segment -> func)
+    3. 切割後進行滑移視窗
+    4. 保留 duration 大於0.5秒部分
+  """
   segDF = pd.DataFrame(columns=['file', 'start time', 'end time', 'label'])
   for filePath in tqdm(filePaths, bar_format='{l_bar}{bar:32}{r_bar}{bar:-32b}'):
     ## Preprocess
@@ -135,6 +142,9 @@ def windowType(filePaths:Path):
 
 # ------------- AutoEncoder
 def aeType(filePaths:Path):
+  """ Autoencoder
+    讀取音檔長度, 並依照 {WIN_LEN, OVERLAP, HOP_LEN}切割 (audioTimeSegment -> func)
+  """
   ae = []
   for filePath in tqdm(filePaths, bar_format='{l_bar}{bar:32}{r_bar}{bar:-32b}'):
     tempDF = pd.DataFrame(columns=['file', 'start time', 'end time'])
@@ -148,6 +158,13 @@ def aeType(filePaths:Path):
 
 # -------------
 def ConcatLabel():
+  """
+    {sLabelPaths} 為私人錄音檔標籤路徑
+    {oLabelPaths} 為OpenSource音檔標籤路徑
+    {audioFilePaths} 所有已降噪音檔路徑
+    1. 將標籤依照 Classifier 需求創建資料集 (LABEL_SEG.csv)
+    2. 將標籤依照 Autoencoder 需求創建資料集 (LABEL_AE.csv)
+  """
   sLabelPaths = sorted(Path.cwd().joinpath('data', 'raw', 'Label').glob('*.txt'))
   oLabelPaths = sorted(Path.cwd().joinpath('data', 'raw', 'Opensource').glob('*.txt'))
   audioFilePaths = sorted(Path.cwd().joinpath('data', 'raw', 'NrAudio').glob('*.wav'))

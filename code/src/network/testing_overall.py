@@ -77,22 +77,23 @@ def resultsVisualisation(predicts, actuals):
   for k, v in precision.items():
     axs[TARGET_SPECIES.index(k)].set_ylim(0, 1)
     axs[TARGET_SPECIES.index(k)].set_xlim(0, 1)
-    axs[TARGET_SPECIES.index(k)].plot(thresList, v, 'r-')
+    axs[TARGET_SPECIES.index(k)].plot(thresList, v, 'r-')     # 紅線 > precision
     axs[TARGET_SPECIES.index(k)].set_title(k)
   for k, v in recall.items():
     axs[TARGET_SPECIES.index(k)].set_ylim(0, 1)
     axs[TARGET_SPECIES.index(k)].set_xlim(0, 1)
-    axs[TARGET_SPECIES.index(k)].plot(thresList, v, 'k-')
+    axs[TARGET_SPECIES.index(k)].plot(thresList, v, 'k-')     # 黑線 > recall
     axs[TARGET_SPECIES.index(k)].set_title(k)
   for k, v in f1.items():
     axs[TARGET_SPECIES.index(k)].set_ylim(0, 1)
     axs[TARGET_SPECIES.index(k)].set_xlim(0, 1)
-    axs[TARGET_SPECIES.index(k)].plot(thresList, v, 'b-')
+    axs[TARGET_SPECIES.index(k)].plot(thresList, v, 'b-')     # 藍線 > F1
     axs[TARGET_SPECIES.index(k)].set_title(f'{k} \nMax F1 ({np.max(v):.2f}) Threshold: {thresList[np.argmax(v)]}')
   plt.savefig(Path.cwd().joinpath('report.png'))
 
 def ExcuteOverallTestingProcess():
   ## Setting
+  ## {WeightPath} 讀取 model weight
   root = Tk()
   root.withdraw()
   WeightPath = askopenfilename(title='Choose The File Of Model Weight', initialdir=Path.cwd().joinpath('model'))

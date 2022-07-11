@@ -9,10 +9,14 @@ warnings.filterwarnings('ignore')
 
 from pathlib import Path
 # -------------
-AUDIOCLIP_LEN = 2.0
+AUDIOCLIP_LEN = 2.0   # 每一個音檔轉成圖片前固定長度
 
 # -------------
 def audioAugment(audio, samplingRate, probability=0.2):
+  """ Data Augmentation
+    每一種 augment 機率 {probability, default 20%}
+    augment 方法: Time stretch, Pitch shifting (每種內含4種參數, 25%)
+  """
   ## Time stretch  {0.81, 0.93, 1.07, 1.23}
   if np.random.random(size=None) <= probability:
     choice = np.random.randint(low=1, high=5)
@@ -40,6 +44,10 @@ def audioAugment(audio, samplingRate, probability=0.2):
   return audio
 
 def generatePCNEMelSpec(audio, samplingRate, window):
+  """
+    將音檔轉換成 Mel-時頻圖, 並使用PCEN技術標準化
+    Mel 轉換視窗大小 {window = (視窗大小, 滑移距離)}
+  """
   pcenTime = 0.06
   pcenGain = 0.8
   pcenBias = 10
@@ -58,15 +66,27 @@ def generatePCNEMelSpec(audio, samplingRate, window):
 
 # -------------
 class BirdsongDataset(torch.utils.data.Dataset):
+  """
+    資料集  
+  """
   def __init__(self, filePath, needAugment=True, needLabel=False):
-    self.dataDF = pd.read_csv(filePath, header=0)
-    self.needAugment = needAugment
-    self.needLabel = needLabel
+    self.dataDF = pd.read_csv(filePath, header=0)   # 資料集路徑
+    self.needAugment = needAugment                  # 是否需要 data augment
+    self.needLabel = needLabel                      # 是否需要 label 輸出
 
   def __len__(self):
     return len(self.dataDF)
 
-  def __getitem__(self, index):    
+  def __getitem__(self, index):
+    """
+      1. 將音訊進行 Augment
+      2. 將音檔用複製模式為 {AUDIOCLIP_LEN} 長度
+      3. 使用3種不同大小及滑移距離的視窗, 將音訊轉PCEN Mel-時頻圖
+      4. 將3種設定產出的圖片以插值法固定大小為 128 pixel * 128 pixel
+      5. 將3張圖片疊起成1次輸入
+        1. 如果不需要Label {needLabel = false} 輸出零向量label
+        2. 如需要{needLabel = true}, 輸出One-hot label
+    """    
     ## Audio source
     folderPath = Path.cwd().joinpath('data', 'raw')
     audioFilePath = str(folderPath.joinpath(self.dataDF.loc[index, 'file']))
