@@ -17,6 +17,9 @@ HOP_LEN = WIN_LEN * (1 - OVERLAP)       # 依照滑移視窗與重疊比例計�
 
 # -------------
 def audioTimeSegment(audioLen):
+  """
+    從 0 開始每一步滑移 {HOP_LEN} 直到 (訊號長度 - {WIN_LEN})
+  """
   return list(np.around(np.arange(0, audioLen-WIN_LEN, HOP_LEN), decimals=6))
 
 def segment(df:pd.DataFrame):
@@ -79,12 +82,12 @@ def labelType(filePaths:Path):
     tempDF = tempDF[['file', 'start time', 'end time', 'label']]
 
     ## Sliding
-    smallDF = tempDF[tempDF['end time'] - tempDF['start time'] <= WIN_LEN]
-    largeDF = tempDF[tempDF['end time'] - tempDF['start time'] > WIN_LEN]
+    smallDF = tempDF[tempDF['end time'] - tempDF['start time'] <= WIN_LEN]    # Duration less and equal than {WIN_LEN}
+    largeDF = tempDF[tempDF['end time'] - tempDF['start time'] > WIN_LEN]     # Duration greater than {WIN_LEN}
     for _, x in largeDF.iterrows():
       st, et = x['start time'], x['end time']-WIN_LEN
       slideList = []
-      ### Slide signal duration longer than @WIN_LEN and concat it into the @smallDF
+      ### Slide signal duration longer than {WIN_LEN} and concat it into the {smallDF}
       while st <= et:
         slideList.append([x['file'], np.around(st, decimals=6), np.around(st+WIN_LEN, decimals=6), x['label']])
         st += HOP_LEN
@@ -93,7 +96,7 @@ def labelType(filePaths:Path):
         [smallDF, pd.DataFrame(slideList, columns=['file', 'start time', 'end time', 'label'])],
         ignore_index=True
       )
-    smallDF = smallDF[smallDF['end time'] - smallDF['start time'] > 0.5] # Only duration > 0.5
+    smallDF = smallDF[smallDF['end time'] - smallDF['start time'] > 0.5] # Only duration > 0.5 are accept
     smallDF.sort_values(by=['file', 'start time', 'end time'], inplace=True)
     smallDF['label'] = smallDF['label'].apply(lambda x: sorted(x))
 
@@ -162,16 +165,16 @@ def ConcatLabel():
     {sLabelPaths} 為私人錄音檔標籤路徑
     {oLabelPaths} 為OpenSource音檔標籤路徑
     {audioFilePaths} 所有已降噪音檔路徑
-    1. 將標籤依照 Classifier 需求創建資料集 (LABEL_SEG.csv)
-    2. 將標籤依照 Autoencoder 需求創建資料集 (LABEL_AE.csv)
+    1. 將標籤依照 Classifier 需求創建資料集 (label_seg.csv)
+    2. 將標籤依照 Autoencoder 需求創建資料集 (label_ae.csv)
   """
   sLabelPaths = sorted(Path.cwd().joinpath('data', 'raw', 'Label').glob('*.txt'))
   oLabelPaths = sorted(Path.cwd().joinpath('data', 'raw', 'Opensource').glob('*.txt'))
   audioFilePaths = sorted(Path.cwd().joinpath('data', 'raw', 'NrAudio').glob('*.wav'))
   segDF = labelType(sLabelPaths + oLabelPaths)
   aeDF = aeType(audioFilePaths)
-  segDF.to_csv(Path.cwd().joinpath('data', 'LABEL_SEG.csv'), header=True, index=False)
-  aeDF.to_csv(Path.cwd().joinpath('data', 'LABEL_AE.csv'), header=True, index=False)
+  segDF.to_csv(Path.cwd().joinpath('data', 'label_seg.csv'), header=True, index=False)
+  aeDF.to_csv(Path.cwd().joinpath('data', 'label_ae.csv'), header=True, index=False)
 
 # -------------
 if __name__ == '__main__':

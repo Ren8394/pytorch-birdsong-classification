@@ -23,8 +23,8 @@ from src.network.network import AutoEncoderClassifer
 from src.utils.utils import GetSortedSpeciesCode
 
 # -------------
-TARGET_SPECIES = GetSortedSpeciesCode()
-THRESHOLD = [0.26, 0.27, 0.41, 0.30, 0.45, 0.39, 0.43, 0.21, 0.36]
+TARGET_SPECIES = GetSortedSpeciesCode()                               # 取得目標物種list
+THRESHOLD = [0.26, 0.27, 0.41, 0.30, 0.45, 0.39, 0.43, 0.21, 0.36]    # 各物種機率peak threshold
 
 WIN_LEN = 1.0
 OVERLAP = 0.75
@@ -93,7 +93,7 @@ def findProbPeak(df:pd.DataFrame):
   return allPeaks
 
 def concatToLabel(file, peakDict):
-  labelDF = pd.read_csv(Path.cwd().joinpath('data', 'LABEL.csv'), header=0)
+  labelDF = pd.read_csv(Path.cwd().joinpath('data', 'label_auto.csv'), header=0)
   dfList = []
   for peakIndex, spList in peakDict.items():
     dfDict = {sp:1 for sp in spList if bool(sp)}
@@ -109,9 +109,18 @@ def concatToLabel(file, peakDict):
   colnames = colnames[3:]
   labelDF = labelDF[(labelDF[colnames] != 0).any(axis=1)]
   labelDF.drop_duplicates(subset=['file', 'start time', 'end time'], inplace=True)
-  labelDF.to_csv(Path.cwd().joinpath('data', 'LABEL.csv'), header=True, index=False)
+  labelDF.to_csv(Path.cwd().joinpath('data', 'label_auto.csv'), header=True, index=False)
 
 def AutoLabel():
+  """
+    1. 讀取自動測試音檔與模型weight
+    2. 將選取音檔降噪
+    3. 自動測試抓取各音檔機率peak並產生自動標籤
+  """
+  if len(THRESHOLD) != len(TARGET_SPECIES):
+    raise ValueError('len of threshold must be same as the target species!')
+  print(list(zip(TARGET_SPECIES, THRESHOLD)))
+  
   ## Setting
   root = Tk()
   root.withdraw()
@@ -125,7 +134,7 @@ def AutoLabel():
     initialdir=Path.cwd().joinpath('model'),
     filetypes=(('Weight files', '*.pth'),)
   )
-  nrAudioPaths = noiseReduce(audioPaths)
+  nrAudioPaths = noiseReduce(audioPaths)          # 降噪
   root.destroy()
 
   ## model
@@ -136,10 +145,11 @@ def AutoLabel():
 
   ## Test and Label
   for nrPath in tqdm(nrAudioPaths):
-    testFilePath = genTestFile(nrPath)
-    testDataloader = genTestDataloader(testFilePath)
-    predicts = test(model, testDataloader)
-    Path.unlink(testFilePath)
+    testFilePath = genTestFile(nrPath)                  # 產生測試檔案
+    testDataloader = genTestDataloader(testFilePath)  
+    predicts = test(model, testDataloader)    
+    Path.unlink(testFilePath)                           # 刪除測試檔案
+    
     predicts = np.array(np.reshape(predicts, (-1, len(TARGET_SPECIES))))
     predDF = pd.DataFrame(predicts, columns=TARGET_SPECIES)
     peakDict = findProbPeak(predDF)

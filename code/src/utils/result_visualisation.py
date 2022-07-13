@@ -65,7 +65,7 @@ def findPeaks(df:pd.DataFrame):
 
 def concatToLabel(file, st, et, labelList):
   labelDF = pd.read_csv(
-    Path.cwd().joinpath('data', 'LABEL.csv'), header=0
+    Path.cwd().joinpath('data', 'label_single.csv'), header=0
   )
   dfDict = {l:1 for l in labelList if bool(l)}
   dfDict['file'] = file
@@ -78,7 +78,7 @@ def concatToLabel(file, st, et, labelList):
   colnames = list(labelDF.columns)
   colnames = colnames[3:]
   labelDF = labelDF[(labelDF[colnames] != 0).any(axis=1)]
-  labelDF.to_csv(Path.cwd().joinpath('data', 'LABEL.csv'), header=True, index=False)
+  labelDF.to_csv(Path.cwd().joinpath('data', 'label_single.csv'), header=True, index=False)
 
 def getTrueFalse(askStr, defaultVal):
   given = ''

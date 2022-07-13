@@ -133,7 +133,7 @@ def visualiseConfusionMatrix(pDF:pd.DataFrame, lDF:pd.DataFrame, maxDict:dict):
 
 def countFileLabels(filePaths:Path):
   """
-    計算每一物種標籤數
+    計算人工標記檔案每一物種標籤數
   """
   countDF = pd.DataFrame(columns=['file']+TARGET_SPECIES)
   for i, filePath in enumerate(filePaths):
@@ -189,11 +189,17 @@ def visualiseR(rDict:dict, maxDict:dict):
   plt.savefig(Path.cwd().joinpath('thres-r.png')) 
 
 def ThresholdTest():
+  """
+    1. 計算人工label各檔案中標籤個數
+    2. 讀取完全測試資料
+    3. 依照一分鐘有無尋找各物種accuracy最高值, 將其作為threshold後視覺化confusion matrix
+    3. 依照一分鐘鳴唱數尋找各物種R最高值
+  """
   sLabelPaths = sorted(Path.cwd().joinpath('data', 'raw', 'Label').glob('*.txt'))
   countDF = countFileLabels(sLabelPaths)
 
   ## Load Predict Probability CSV
-  predictDF = pd.read_csv(Path.cwd().joinpath('data', 'TEST_APP.csv'), header=0)
+  predictDF = pd.read_csv(Path.cwd().joinpath('data', 'test_app.csv'), header=0)
 
   ## Find threshold for each species
   maxThresDict, spThresDict = findThreshold(predictDF, countDF)

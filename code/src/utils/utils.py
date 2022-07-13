@@ -43,6 +43,9 @@ def OneHotEncoding(targets, source):
   xgboost: xgboost
   ens: Efficient Number of Samples
   none: 不設定
+  ----
+  > Class-Balanced Loss Based on Effective Number of Samples (2019)
+  ----
 """
 def CalculateImbalanceWeight(filePath, weightType='ens'):
   df = pd.read_csv(filePath, header=0)

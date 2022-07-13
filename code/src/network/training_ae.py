@@ -26,7 +26,7 @@ def train(model, dataloader, optimizer):
   model.train()
 
   ## Loss function
-  criterion = nn.MSELoss().to(DEVICE)
+  criterion = nn.MSELoss().to(DEVICE)   # MSE Loss
 
   ## Calculate loss, forward and backward process
   trainingLoss = 0.0
@@ -80,11 +80,11 @@ def ExcuteAETrainingProcess():
   ## Create model, optimizer
   ## Load early status
   model = AutoEncoder().to(DEVICE)
-  optimizer = torch.optim.SGD(model.parameters(), lr=learningRate, momentum=0.9)
-  if earlyStatusPath.exists():
-    ckPoint = torch.load(earlyStatusPath, map_location=torch.device(DEVICE))
-    model.load_state_dict(ckPoint['model_state_dict'])
-    optimizer.load_state_dict(ckPoint['optimizer_state_dict'])
+  optimizer = torch.optim.SGD(model.parameters(), lr=learningRate, momentum=0.9)      # 使用 SGD optimizer
+  if earlyStatusPath.exists():                                                        # 繼續先前進度
+    ckPoint = torch.load(earlyStatusPath, map_location=torch.device(DEVICE))          # 
+    model.load_state_dict(ckPoint['model_state_dict'])                                # 讀取先前模型 weight
+    optimizer.load_state_dict(ckPoint['optimizer_state_dict'])                        # 讀取optimizer 紀錄
     curEpoch = ckPoint['current_epoch']
     bestLoss = ckPoint['best_loss']
   else:

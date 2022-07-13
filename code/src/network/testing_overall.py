@@ -131,14 +131,14 @@ def ExcuteOverallTestingProcess():
       pd.DataFrame(predicts, columns=[f'{sp}(P)' for sp in TARGET_SPECIES])
     ], axis=1, ignore_index=False
   )
-  if Path.cwd().joinpath('data', 'TEST_APP.csv').exists():
-    testDF = pd.read_csv(Path.cwd().joinpath('data', 'TEST_APP.csv'), header=0)
+  if Path.cwd().joinpath('data', 'test_app.csv').exists():
+    testDF = pd.read_csv(Path.cwd().joinpath('data', 'test_app.csv'), header=0)
     testDF = pd.concat([testDF, resDF], ignore_index=True)
     testDF.drop_duplicates(subset=['file', 'start time', 'end time'], inplace=True)
     testDF.sort_values(by=['file', 'start time', 'end time'], inplace=True)
-    testDF.to_csv(Path.cwd().joinpath('data', 'TEST_APP.csv'), header=True, index=False)
+    testDF.to_csv(Path.cwd().joinpath('data', 'test_app.csv'), header=True, index=False)
   else:
-    resDF.to_csv(Path.cwd().joinpath('data', 'TEST_APP.csv'), header=True, index=False)
+    resDF.to_csv(Path.cwd().joinpath('data', 'test_app.csv'), header=True, index=False)
 
 # -------------
 if __name__ == '__main__':

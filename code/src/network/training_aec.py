@@ -37,7 +37,7 @@ def train(model, dataloader, optimizer):
   model.train()
 
   ## Loss function
-  criterion = nn.BCEWithLogitsLoss(IMBALANCE_WEIGHT).to(DEVICE)
+  criterion = nn.BCEWithLogitsLoss(IMBALANCE_WEIGHT).to(DEVICE)   # BCE Loss with Log
 
   ## Calculate loss, forward and backward process
   trainingLoss = 0.0
@@ -100,10 +100,10 @@ def ExcuteAECTrainingProcess():
     torch.load(encoderWeightPath, map_location=DEVICE)
   )
   for param in model.encoder.parameters():
-    param.requires_grad = False
+    param.requires_grad = False    # 固定encoder weight不要訓練
   
-  ## Loss function and optimizer
-  optimizer = torch.optim.SGD(model.parameters(), lr=learningRate, momentum=0.9)
+  ## Optimizer
+  optimizer = torch.optim.SGD(model.parameters(), lr=learningRate, momentum=0.9)   # 使用 SGD optimizer
 
   ## Dataloader
   trainingDataloader = DataLoader(

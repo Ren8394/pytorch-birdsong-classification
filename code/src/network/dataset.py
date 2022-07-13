@@ -47,6 +47,11 @@ def generatePCNEMelSpec(audio, samplingRate, window):
   """
     將音檔轉換成 Mel-時頻圖, 並使用PCEN技術標準化
     Mel 轉換視窗大小 {window = (視窗大小, 滑移距離)}
+    ----
+    Rethinking CNN models for audio classification (2020)
+    Per-channel energy normalization: Why and how (2018)
+    Chirping up the right tree: Incorporating biological taxonomies into deep bioacoustic classifiers (2020)
+    ----
   """
   pcenTime = 0.06
   pcenGain = 0.8
@@ -80,7 +85,7 @@ class BirdsongDataset(torch.utils.data.Dataset):
   def __getitem__(self, index):
     """
       1. 將音訊進行 Augment
-      2. 將音檔用複製模式為 {AUDIOCLIP_LEN} 長度
+      2. 將音檔用複製模式(wrap)為 {AUDIOCLIP_LEN} 長度
       3. 使用3種不同大小及滑移距離的視窗, 將音訊轉PCEN Mel-時頻圖
       4. 將3種設定產出的圖片以插值法固定大小為 128 pixel * 128 pixel
       5. 將3張圖片疊起成1次輸入

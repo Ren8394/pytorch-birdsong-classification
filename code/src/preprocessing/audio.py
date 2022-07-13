@@ -56,7 +56,7 @@ def concatAudio(filePaths:Path, labeledFilePaths:Path):
 def ReduceAudioNoise():
   """
     1. 將 {sAudioPaths} 路徑下所有錄音檔進行降噪處理於 NrAudio 存成相同檔名的降噪檔案
-    2. 將已經人工標籤過的檔案 {sLabeledNrAudioPaths} 取出製作成檔名為 AUDIO.csv metadata
+    2. 將已經人工標籤過的檔案 {sLabeledNrAudioPaths} 取出製作成檔名為 audio.csv metadata
     3. 將 {oLabelAudioPaths} 路徑下所有錄音檔進行降噪處理於 NrAudio 存成相同檔名的降噪檔案
     // {sAudioPaths} 未降噪私人錄音路徑
     // {sLabeledNrAudioPaths} 有標記的已降噪私人錄音檔案路徑
@@ -72,7 +72,7 @@ def ReduceAudioNoise():
   ))
   sNrAudioPaths = sorted(Path.cwd().joinpath('data', 'raw', 'NrAudio').glob('*.wav'))
   audioDF = concatAudio(sNrAudioPaths, sLabeledNrAudioPaths)
-  audioDF.to_csv(Path.cwd().joinpath('data', 'AUDIO.csv'), header=True, index=False)
+  audioDF.to_csv(Path.cwd().joinpath('data', 'audio.csv'), header=True, index=False)
 
   oLabeledAudioPaths = list(map(
     lambda x: sorted(Path.cwd().joinpath('data', 'raw', 'Opensource').glob(f'*{x.stem}*'))[0],
