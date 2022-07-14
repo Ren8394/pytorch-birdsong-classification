@@ -53,3 +53,45 @@
       |- res_single.csv, tempTest.csv                       // Temporary file
 
 ```
+
+## Installation
+
+### Minicoda
+
+1. Go to [Miniconda](https://docs.conda.io/en/latest/miniconda.html) and download latest Miniconda installer (e.g. _Miniconda3 Windows 64-bit_)
+
+2. Use installer to install miniconda
+
+   * In advanced options, check all boxes about **Add to my PATH** and **Register default Python**
+
+3. Open command line interface (type `cmd` in search), and type `conda info` to see whether the conda environment install correctly
+
+4. In CLI, type `conda create -n {name} python={version}` to create conda enviornment
+
+   * We usually create another environment to saperate environment from _base_
+   * In this doc, execute `conda create -n py39 python=3.9`, which means we create an environment named _py39_ and install python _version 3.9_
+
+5. After successfuly creating _py39_ enviornment, execute `conda activate py39` to activate enviornment. You will see that the word in parentheses changed from _base_ to _py39_
+
+### Vscode
+
+1. Go to [VSCode](https://code.visualstudio.com/download) and download user installer
+
+2. Use installer to install VSCode 
+
+   * Checking boxes for add PATH, Open with code, ... is recommanded
+
+3. Open VSCode and search Python extension, or you can use this [link](https://marketplace.visualstudio.com/items?itemName=ms-python.python) to download extension
+
+4. While installation finish, VSCode will ask for selecting interpreter. Select _py39_ which we used conda created before
+
+### Necessary Packages Of Our Project
+
+1. In project folder, open Windows CLI or VSCode (Ctrl + ` to open CLI in VSCode).
+
+   * If set interpreter correctly in VSCode part, VSCode will activate _py39_ environment automatically
+   * If use Windows CLI, please remember activating _py39_ environment first
+
+2. Execute `pip install -r requirements.txt` to install necessary packages
+
+3. Execute `conda list` to check whether the packages install properly or not
