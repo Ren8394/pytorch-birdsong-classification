@@ -83,7 +83,8 @@
 
 3. Open VSCode and search for Python extension, or you can use this [link](https://marketplace.visualstudio.com/items?itemName=ms-python.python) to download extension
 
-4. While extension istallation is finish, VSCode will ask for selecting interpreter. Select _py39_ which we used conda to create before
+4. While extension istallation is finish, VSCode will ask for selecting interpreter.
+Select _py39_ which we used conda to create before
 
 ### Necessary Packages Of Our Project
 
