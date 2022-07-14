@@ -103,14 +103,15 @@ Use every offical instruction
 
 absl-py `pip install absl-py`  
 noisereduce `pip install noisereduce`  
-<!-- librosa `pip install librosa` -->  
 librosa `conda install -c conda-forge librosa`  
 pydub `pip install pydub`  
 seaborn `conda install seaborn`  
 soundfile `pip install SoundFile`  
-<!-- scipy `pip install numpy scipy matplotlib ipython jupyter pandas sympy nose` -->  
 scipy `conda install -c anaconda scipy`  
 sklearn `conda install -c intel scikit-learn`  
 tqdm `conda install -c conda-forge tqdm`  
-torch `conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch`    
+torch `conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch`  
 torchinfo `conda install -c conda-forge torchinfo`  
+
+<!-- scipy `pip install numpy scipy matplotlib ipython jupyter pandas sympy nose` -->  
+<!-- librosa `pip install librosa` --> 
