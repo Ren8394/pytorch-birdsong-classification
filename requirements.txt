@@ -158,7 +158,7 @@ torch==1.10.0
 torch-tb-profiler==0.3.1
 torchaudio==0.10.0
 torchinfo==1.7.0
-torchvision==0.9.0a0
+torchvision==0.9.0
 torchviz==0.0.2
 tornado==6.1
 tqdm==4.64.0
