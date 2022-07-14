@@ -73,7 +73,7 @@
 
 5. After successfuly creating _py39_ enviornment, execute `conda activate py39` to activate enviornment. You will see that the word in parentheses changed from _base_ to _py39_
 
-### Vscode
+### VSCode
 
 1. Go to [VSCode](https://code.visualstudio.com/download) and download user installer
 
