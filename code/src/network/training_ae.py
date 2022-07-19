@@ -14,7 +14,7 @@ from src.network.dataset import BirdsongDataset
 
 # -------------
 if torch.cuda.is_available():
-  DEVICE = torch.device('cuda:0')
+  DEVICE = torch.device('cuda:1')
   torch.backends.cudnn.benchmark = True
 else:
   DEVICE = torch.device('cpu')
