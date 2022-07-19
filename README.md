@@ -112,6 +112,3 @@ sklearn `conda install -c intel scikit-learn`
 tqdm `conda install -c conda-forge tqdm`  
 torch `conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch`  
 torchinfo `conda install -c conda-forge torchinfo`  
-
-<!-- scipy `pip install numpy scipy matplotlib ipython jupyter pandas sympy nose` -->  
-<!-- librosa `pip install librosa` --> 
