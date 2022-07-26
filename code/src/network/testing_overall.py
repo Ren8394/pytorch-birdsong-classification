@@ -137,7 +137,7 @@ def showStatisticResults(predicts, actuals):
 
   ## Save results
   staticDF.fillna(0, inplace=True)
-  staticDF.T.to_csv(Path.cwd().joinpath('data', 'test_app.csv'), header=True, index=True)
+  staticDF.T.to_csv(Path.cwd().joinpath('data', 'test_overall.csv'), header=True, index=True)
 
 def ExcuteOverallTestingProcess():
   ## Setting
