@@ -22,7 +22,7 @@ TARGET_SPECIES = GetSortedSpeciesCode()
 
 # 確定可跑訓練裝置 CPU 或 GPU
 if torch.cuda.is_available():
-  DEVICE = torch.device('cuda:0')
+  DEVICE = torch.device('cuda:0')       # Use first GPU
   torch.backends.cudnn.benchmark = True
 else:
   DEVICE = torch.device('cpu')
