@@ -8,7 +8,7 @@ import torch.nn as nn
 
 from pathlib import Path
 sys.path.append(str(Path.cwd().joinpath('code')))
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, precision_score, recall_score, fbeta_score
 from torch.utils.data import DataLoader
 from tkinter import *
 from tkinter.filedialog import askopenfilename
@@ -22,7 +22,7 @@ from src.utils.utils import GetSortedSpeciesCode
 TARGET_SPECIES = GetSortedSpeciesCode()
 
 if torch.cuda.is_available():
-  DEVICE = torch.device('cuda:0')
+  DEVICE = torch.device('cuda:0')       # Use first GPU
   torch.backends.cudnn.benchmark = True
 else:
   DEVICE = torch.device('cpu')
@@ -91,6 +91,54 @@ def resultsVisualisation(predicts, actuals):
     axs[TARGET_SPECIES.index(k)].set_title(f'{k} \nMax F1 ({np.max(v):.2f}) Threshold: {thresList[np.argmax(v)]}')
   plt.savefig(Path.cwd().joinpath('report.png'))
 
+def showStatisticResults(predicts, actuals):
+  ## Build table frame
+  staticDFIndex = pd.MultiIndex.from_product(
+    [TARGET_SPECIES, ['precision', 'recall', 'f0.5', 'f1', 'f2']]
+  )
+  thresList = np.around(np.arange(0, 1, 0.01), decimals=2)
+  staticDF = pd.DataFrame(columns=thresList, index=staticDFIndex)
+  
+  ## Fill in table
+  trueLabels = np.array(np.reshape(actuals, (-1, len(TARGET_SPECIES))), dtype=int)
+  for thres in thresList:
+    predLabels = np.array(
+      np.reshape(predicts, (-1, len(TARGET_SPECIES))) >= thres, dtype=int
+    )
+    for i, sp in enumerate(TARGET_SPECIES):
+      staticDF.loc[(sp, 'precision'), thres] = np.round(
+        precision_score(
+          y_pred=predLabels[:, i], y_true=trueLabels[:, i], zero_division=0
+        ), decimals=4
+      )
+      staticDF.loc[(sp, 'recall'), thres] = np.round(
+        recall_score(
+          y_pred=predLabels[:, i], y_true=trueLabels[:, i], zero_division=0
+        ), decimals=4
+      )
+      staticDF.loc[(sp, 'f0.5'), thres] = np.round(
+        fbeta_score(
+          y_pred=predLabels[:, i], y_true=trueLabels[:, i], beta=0.5, zero_division=0,
+        ),
+        decimals=4
+      )
+      staticDF.loc[(sp, 'f1'), thres] = np.round(
+        fbeta_score(
+          y_pred=predLabels[:, i], y_true=trueLabels[:, i], beta=1.0, zero_division=0,
+        ),
+        decimals=4
+      )
+      staticDF.loc[(sp, 'f2'), thres] = np.round(
+        fbeta_score(
+          y_pred=predLabels[:, i], y_true=trueLabels[:, i], beta=2, zero_division=0,
+        ),
+        decimals=4
+      )
+
+  ## Save results
+  staticDF.fillna(0, inplace=True)
+  staticDF.T.to_csv(Path.cwd().joinpath('data', 'test_app.csv'), header=True, index=True)
+
 def ExcuteOverallTestingProcess():
   ## Setting
   ## {WeightPath} 讀取 model weight
@@ -117,8 +165,11 @@ def ExcuteOverallTestingProcess():
 
   ## Test for model
   predicts, actuals = test(model, testingDataloader)
+  ## Save results output
+  showStatisticResults(predicts, actuals)
   ## Classification reports
   resultsVisualisation(predicts, actuals)
+
 
   ## Test for applicatation
   predicts, actuals = test(model, appTestingDataLoader)
