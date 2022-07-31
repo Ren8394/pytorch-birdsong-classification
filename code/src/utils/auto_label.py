@@ -114,8 +114,7 @@ def concatToLabel(file, peakDict):
 def AutoLabel():
   """
     1. 讀取自動測試音檔與模型weight
-    2. 將選取音檔降噪
-    3. 自動測試抓取各音檔機率peak並產生自動標籤
+    2. 自動測試抓取各音檔機率peak並產生自動標籤
   """
   if len(THRESHOLD) != len(TARGET_SPECIES):
     raise ValueError('len of threshold must be same as the target species!')
@@ -134,7 +133,6 @@ def AutoLabel():
     initialdir=Path.cwd().joinpath('model'),
     filetypes=(('Weight files', '*.pth'),)
   )
-  nrAudioPaths = noiseReduce(audioPaths)          # 降噪
   root.destroy()
 
   ## model
@@ -144,8 +142,8 @@ def AutoLabel():
   )
 
   ## Test and Label
-  for nrPath in tqdm(nrAudioPaths):
-    testFilePath = genTestFile(nrPath)                  # 產生測試檔案
+  for path in tqdm(audioPaths):
+    testFilePath = genTestFile(path)                  # 產生測試檔案
     testDataloader = genTestDataloader(testFilePath)  
     predicts = test(model, testDataloader)    
     Path.unlink(testFilePath)                           # 刪除測試檔案
@@ -153,7 +151,7 @@ def AutoLabel():
     predicts = np.array(np.reshape(predicts, (-1, len(TARGET_SPECIES))))
     predDF = pd.DataFrame(predicts, columns=TARGET_SPECIES)
     peakDict = findProbPeak(predDF)
-    concatToLabel(Path('NrAudio', nrPath.name), peakDict)
+    concatToLabel(Path('NrAudio', path.name), peakDict)
 
 # -------------
 if __name__ == '__main__':

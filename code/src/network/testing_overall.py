@@ -5,6 +5,8 @@ import pandas as pd
 import sys
 import torch
 import torch.nn as nn
+import warnings
+warnings.filterwarnings("ignore")
 
 from pathlib import Path
 sys.path.append(str(Path.cwd().joinpath('code')))
