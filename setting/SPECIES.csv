@@ -1,0 +1,56 @@
+﻿Code,Generic Name,Specific Epithet,Common Name,Target
+AA,Abroscopus,albogularis,棕面鶯,TRUE
+AC,Arborophila,crudigularis,臺灣山鷓鴣,FALSE
+ACO,Aegithalos,concinnus,紅頭山雀,FALSE
+AM,Alcippe,morrisonia,繡眼畫眉,FALSE
+AT,Accipiter,trivirgatus,鳳頭蒼鷹,FALSE
+AV,Accipiter,virgatus,松雀鷹 ,FALSE
+BG,Brachypteryx,goodfellowi,小翼鶇,FALSE
+BS,Bambusicola,sonorivox,臺灣竹雞,FALSE
+CF,Carpodacus,formosanus,酒紅朱雀,FALSE
+CM,Corvus,macrorhynchos,巨嘴鴉 ,FALSE
+CP,Columba,pulchricollis,灰林鴿 ,FALSE
+CR,Cyanoderma,ruficeps,山紅頭,TRUE
+DA,Dicrurus,aeneus,小卷尾,FALSE
+DC,Dendrocopos,canicapillus,小啄木 ,FALSE
+DI,Dicaeum,ignipectus,紅胸啄花 ,FALSE
+DL,Dendrocopos,leucotos,大赤啄木 ,FALSE
+DM,Dicaeum,minullum,綠啄花,FALSE
+EZ,Erpornis,zantholeuca,綠畫眉 ,FALSE
+FH,Ficedula,hyperythra,黃胸青鶲 ,TRUE
+GB,Glaucidium,brodiei,鵂鶹 ,FALSE
+HA,Heterophasia,auricularis,白耳畫眉,TRUE
+HAC,Horornis,acanthizoides,深山鶯,FALSE
+HAZ,Hypothymis,azurea,黑枕藍鶲,FALSE
+HF,Horornis,fortipes,小鶯,FALSE
+HS,Hierococcyx,sparverioides,鷹鵑,FALSE
+IP,Ianthocincla,poecilorhynchus,竹鳥,FALSE
+LA,Locustella,alishanensis,臺灣叢樹鶯,FALSE
+LS,Liocichla,steerii,黃胸藪眉,FALSE
+ME,Megapomatorhinus,erythrocnemis,大彎嘴,FALSE
+MH,Machlolophus,holsti,黃山雀,FALSE
+MI,Myophonus,insularis,臺灣紫嘯鶇,FALSE
+ML,Myiomela,leucura,白尾鴝,FALSE
+NC,Nucifraga,caryocatactes,星鴉 ,FALSE
+NV,Niltava,vivida,黃腹琉璃,TRUE
+OS,Otus,spilocephalus,黃嘴角鴞,FALSE
+PA,Periparus,ater,煤山雀,FALSE
+PAL,Pnoepyga,albiventer,鱗胸鷦眉,TRUE
+PAU,Phoenicurus,auroreus,黃尾鴝,FALSE
+PC,Picus,canus,綠啄木,FALSE
+PM,Parus,monticolus,青背山雀,TRUE
+PMU,Pomatorhinus,musicus,小彎嘴,FALSE
+PN,Psilopogon,nuchalis,五色鳥,FALSE
+PNI,Pyrrhula,nipalensis,褐鷽 ,FALSE
+PS,Pericrocotus,solaris,灰喉山椒鳥,FALSE
+RG,Regulus,goodfellowi,火冠戴菊鳥,FALSE
+SB,Schoeniparus,brunneus,頭烏線,FALSE
+SC,Sittiparus,castaneoventris,赤腹山雀,FALSE
+SCH,Spilornis,cheela,大冠鷲,FALSE
+SE,Sitta,europaea,茶腹鳾,TRUE
+TJ,Tarsiger,johnstoniae,栗背林鴝,FALSE
+TM,Trochalopteron,morrisonianum,臺灣噪眉,FALSE
+TP,Turdus,poliocephalus,白頭鶇,FALSE
+TS,Treron,sieboldii,綠鳩,FALSE
+YB,Yuhina,brunneiceps,冠羽畫眉,TRUE
+ZD,Zoothera,dauma,虎鶇,FALSE

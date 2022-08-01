@@ -9,18 +9,13 @@ from pathlib import Path
 """
 從 SPECIES.csv 取出目標物種
 """
-def GetSortedSpeciesCode():
-  df = pd.read_csv(Path.cwd().joinpath('data', 'SPECIES.csv'), header=0)
+def GetSortedSpeciesCode(filePath):
+  df = pd.read_csv(filePath, header=0)
   res = df.loc[df['Target'], 'Code'].tolist()  
-  return res
+  return sorted(res)
 
-""" (未使用)
-從 STATION.csv 取出測站
-"""
-def GetStationList():
-  df = pd.read_csv(Path.cwd().joinpath('data', 'STATION.csv'), header=0)
-  res = df['station'].tolist()
-  return res
+def SegmentWithSlidingWindow(length, windowLength, hopLength):
+  return list(np.around(np.arange(0, length - windowLength, hopLength), decimals=6))
 
 """
 依照 {source} 將 {target} 進行 One-hot encoding
@@ -51,7 +46,7 @@ def CalculateImbalanceWeight(filePath, weightType='ens'):
   df = pd.read_csv(filePath, header=0)
   labels = []
   for _, x in df.iterrows():
-    labels.append(ast.literal_eval(x['code']))
+    labels.append(ast.literal_eval(x['onehot']))
   df = pd.DataFrame.from_records(labels)
   classCounts = df.sum().to_list()
   ## Calculate different type
@@ -74,8 +69,4 @@ def CalculateImbalanceWeight(filePath, weightType='ens'):
 
 # -------------
 if __name__ == '__main__':
-  print(
-    CalculateImbalanceWeight(Path.cwd().joinpath('data', 'aec_train.csv'), 'ens')
-  )
-  print(GetSortedSpeciesCode())
-  print(GetStationList())
+  pass
