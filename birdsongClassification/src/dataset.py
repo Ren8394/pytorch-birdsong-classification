@@ -93,7 +93,7 @@ class BirdsongDataset(torch.utils.data.Dataset):
         2. 如需要{needLabel = true}, 輸出One-hot label
     """    
     ## Audio source
-    folderPath = Path.cwd().parent.joinpath('data')
+    folderPath = Path.cwd().parent.parent.joinpath('data')
     audioFilePath = str(folderPath.joinpath(self.dataDF.loc[index, 'file']))
     audio, sr = librosa.load(audioFilePath, sr=None)
     audio = audio.T
