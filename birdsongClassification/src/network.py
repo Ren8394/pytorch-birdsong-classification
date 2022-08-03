@@ -104,11 +104,4 @@ class AutoEncoderClassifer(nn.Module):
 
 # -------------
 if __name__ == '__main__':
-  """
-    如果執行此檔, 會印出模型架構及各層輸出
-    (假設輸入維度 16(batch size)*3(input channel)*128(width)*128(height))
-  """
-  ae = AutoEncoder()
-  summary(ae, input_size=(16, 3, 128, 128))
-  aeClassifier = AutoEncoderClassifer(9)
-  summary(aeClassifier, input_size=(16, 3, 128, 128))
+  pass
