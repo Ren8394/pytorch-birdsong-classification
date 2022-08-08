@@ -1,8 +1,6 @@
 import torch
 import torch.nn as nn
 
-from torchinfo import summary
-
 # -------------
 # Encoder
 class Encoder(nn.Module):
@@ -87,9 +85,9 @@ class AutoEncoder(nn.Module):
     return codes, outputs             # Get code (for further classifier), and output (self-supervised)
 
 # AE + Classifier
-class AutoEncoderClassifer(nn.Module):
+class AutoEncoderClassifier(nn.Module):
   def __init__(self, numberOfClass:int) -> None:    # {numberOfClass} means how many classes do we want to classify
-    super(AutoEncoderClassifer, self).__init__()
+    super(AutoEncoderClassifier, self).__init__()
     self.encoder = Encoder()
     self.classifier = nn.Sequential(
       nn.Linear(in_features=1024, out_features=1024, bias=True),

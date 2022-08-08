@@ -5,8 +5,33 @@
 ```(python)
 < pytorch-birdsong-classification >
   |
-  |-
-
+  |- birdsongClassification
+  |  |
+  |  |- birdsongClassifier    // Preprocessing and model functions
+  |  |- oneMinuteApplication  // Threshold finding and labeling
+  |  |- src                   // Network structure and other utilities
+  |  |- audioTransder.ipynb   // For file copy and transfer
+  |  |- singleToAuto.ipynb    // Download and sync file from google drive
+  |
+  |- data   
+  |  |- Audio                 // Self-recorded raw audio from automatic record units
+  |  |- NrAudio               // Audio which noise is reduced
+  |  |- Label                 // Self label using other software
+  |  |- OpenSource            // Xeno-canto and eBird data
+  |  |- tmp                   // Temporary file for model taining, etc.
+  |  |- xxx-dataset.csv       // Manual, auto, single and ae dataset
+  |
+  |- model                    // Model weight
+  |- setting     
+  |  |
+  |  |- config.ini            // Config for model
+  |  |- SPECIES.csv           // For target species selection
+  |  |- STATION.csv           // Station list
+  |
+  |- .gitignore
+  |- LICENSE
+  |- README.md
+  |- requirements.txt 
 ```
 
 ## Installation

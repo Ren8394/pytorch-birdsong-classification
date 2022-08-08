@@ -50,7 +50,6 @@ def generatePCNEMelSpec(audio, samplingRate, window):
     ----
     Rethinking CNN models for audio classification (2020)
     Per-channel energy normalization: Why and how (2018)
-    Chirping up the right tree: Incorporating biological taxonomies into deep bioacoustic classifiers (2020)
     ----
   """
   pcenTime = 0.06
@@ -89,7 +88,7 @@ class BirdsongDataset(torch.utils.data.Dataset):
       3. 使用3種不同大小及滑移距離的視窗, 將音訊轉PCEN Mel-時頻圖
       4. 將3種設定產出的圖片以插值法固定大小為 128 pixel * 128 pixel
       5. 將3張圖片疊起成1次輸入
-        1. 如果不需要Label {needLabel = false} 輸出零向量label
+        1. 如果不需要Label {needLabel = false} 輸出零向量label (未來會忽略)
         2. 如需要{needLabel = true}, 輸出One-hot label
     """    
     ## Audio source

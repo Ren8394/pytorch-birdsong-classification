@@ -14,6 +14,9 @@ def GetSortedSpeciesCode(filePath):
   res = df.loc[df['Target'], 'Code'].tolist()  
   return sorted(res)
 
+"""
+依照訊號總長度與滑移視窗設定切割並產生切割片段
+"""
 def SegmentWithSlidingWindow(length, windowLength, hopLength):
   return list(np.around(np.arange(0, length - windowLength, hopLength), decimals=6))
 
