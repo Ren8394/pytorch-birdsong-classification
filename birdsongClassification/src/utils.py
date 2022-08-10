@@ -11,7 +11,7 @@ from pathlib import Path
 """
 def GetSortedSpeciesCode(filePath):
   df = pd.read_csv(filePath, header=0)
-  res = df.loc[df['Target'], 'Code'].tolist()  
+  res = df.loc[df['target'], 'code'].tolist()  
   return sorted(res)
 
 """

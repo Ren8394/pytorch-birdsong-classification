@@ -96,7 +96,7 @@ class BirdsongDataset(torch.utils.data.Dataset):
     audioFilePath = str(folderPath.joinpath(self.dataDF.loc[index, 'file']))
     audio, sr = librosa.load(audioFilePath, sr=None)
     audio = audio.T
-    audio = audio[int(float(self.dataDF.loc[index, 'start time'])*sr):int(float(self.dataDF.loc[index, 'end time'])*sr)]
+    audio = audio[int(float(self.dataDF.loc[index, 'start_time'])*sr):int(float(self.dataDF.loc[index, 'end_time'])*sr)]
 
     ## DataAugument
     if self.needAugment:
