@@ -46,49 +46,44 @@
 
 3. Open command line interface (type `cmd` in search), and type `conda info` to see whether the conda environment install correctly
 
-4. In CLI, type `conda create -n {name} python={version}` to create conda enviornment
-
-   * We usually create another environment to saperate environment from _base_
-   * In this doc, execute `conda create -n py39 python=3.9`, which means we create an environment named _py39_ and install python _version 3.9_
-
-5. After successfuly creating _py39_ enviornment, execute `conda activate py39` to activate enviornment. You will see that the word in parentheses changed from _base_ to _py39_
-
 ### VSCode
 
 1. Go to [VSCode](https://code.visualstudio.com/download) and download user installer
 
 2. Use installer to install VSCode
 
-   * Checking boxes for add PATH, Open with code, ... is recommanded
+   * Checking boxes for **add PATH**, **Open with code**, ... is recommanded
 
-3. Open VSCode and search for Python extension, or you can use this [link](https://marketplace.visualstudio.com/items?itemName=ms-python.python) to download extension
+3. Open VSCode and search for Python extension, or you can use this [link](https://marketplace.visualstudio.com/items?itemName=ms-python.python) to download extension. Also, if you want to run jupyter notebook in VSCode, installing [jupyter extension](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter) is recommanded.
 
-4. While extension istallation is finish, VSCode will ask for selecting interpreter.
-Select _py39_ which we used conda to create before
+### Setup environment
 
-### Necessary Packages Of Our Project
+#### Windows Platform
 
-#### Use requirements.txt
+If you are in Windows OS, Create a conda environment and install necessary packages with the following command.  
 
-  1. In project folder, open Windows CLI or VSCode (Ctrl + ` to open CLI in VSCode).
+1. `conda env create -f environment.yml` in the _Pytorch-Birdsong-Classification_ folder.
+   * It will create **pytorch_env** environment and install conda packages in the environment.
+2. `conda activate pytorch_env`
+3. `pip install -r requirements.txt`
 
-     * If set interpreter correctly in VSCode part, VSCode will activate _py39_ environment automatically
-     * If use Windows CLI, please remember activating _py39_ environment first
+#### Other platforms
 
-  2. Execute `pip install -r requirements.txt` to install necessary packages
+If you are in other platforms such as MacOS or Linux. Create a conda environment and install necessary packages with the following command.  
 
-  3. Execute `conda list` to check whether the packages install properly or not
+1. `conda env create -n pytorch_env`
+2. `conda activate pytorch_env`
+3. install packages
 
-#### Use every offical instruction
-
-absl-py `pip install absl-py`  
-noisereduce `pip install noisereduce`  
-librosa `conda install -c conda-forge librosa`  
-pydub `pip install pydub`  
-seaborn `conda install seaborn`  
-soundfile `pip install SoundFile`  
-scipy `conda install -c anaconda scipy`  
-sklearn `conda install -c intel scikit-learn`  
-tqdm `conda install -c conda-forge tqdm`  
-torch `conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch`  
-torchinfo `conda install -c conda-forge torchinfo`  
+   * absl-py `pip install absl-py`  
+   * jupyter `conda install -c ananconda jupyter`
+   * noisereduce `pip install noisereduce`  
+   * librosa `conda install -c conda-forge librosa`  
+   * pydub `pip install pydub`  
+   * seaborn `conda install seaborn`  
+   * soundfile `pip install SoundFile`  
+   * scipy `conda install -c anaconda scipy`  
+   * sklearn `conda install -c intel scikit-learn`  
+   * tqdm `conda install -c conda-forge tqdm`  
+   * torch `conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch`  
+   * torchinfo `conda install -c conda-forge torchinfo`  
