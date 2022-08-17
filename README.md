@@ -62,10 +62,10 @@
 
 If you are in Windows OS, Create a conda environment and install necessary packages with the following command.  
 
-1. `conda env create -f environment.yml` in the _Pytorch-Birdsong-Classification_ folder.
+1. `conda env create -f environment_win.yml` in the _Pytorch-Birdsong-Classification_ folder.
    * It will create **pytorch_env** environment and install conda packages in the environment.
 2. `conda activate pytorch_env`
-3. `pip install -r requirements.txt`
+3. `pip install -r requirements_win.txt`
 
 #### Other platforms
 
