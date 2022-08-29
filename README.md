@@ -60,4 +60,4 @@
 
 1. Execute `conda env create -f environment.yml` in the _Pytorch-Birdsong-Classification_ folder.
    * It will create **pytorch_env** environment and install conda packages in the environment.
-2. `conda activate pytorch_env`
+2. Execute `conda activate pytorch_env` getting into the **pytorch_env** environment
