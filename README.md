@@ -58,32 +58,6 @@
 
 ### Setup environment
 
-#### Windows Platform
-
-If you are in Windows OS, Create a conda environment and install necessary packages with the following command.  
-
-1. `conda env create -f environment_win.yml` in the _Pytorch-Birdsong-Classification_ folder.
+1. Execute `conda env create -f environment.yml` in the _Pytorch-Birdsong-Classification_ folder.
    * It will create **pytorch_env** environment and install conda packages in the environment.
 2. `conda activate pytorch_env`
-3. `pip install -r requirements_win.txt`
-
-#### Other platforms
-
-If you are in other platforms such as MacOS or Linux. Create a conda environment and install necessary packages with the following command.  
-
-1. `conda env create -n pytorch_env`
-2. `conda activate pytorch_env`
-3. install packages
-
-   * absl-py `pip install absl-py`  
-   * jupyter `conda install -c ananconda jupyter`
-   * noisereduce `pip install noisereduce`  
-   * librosa `conda install -c conda-forge librosa`  
-   * pydub `pip install pydub`  
-   * seaborn `conda install seaborn`  
-   * soundfile `pip install SoundFile`  
-   * scipy `conda install -c anaconda scipy`  
-   * sklearn `conda install -c intel scikit-learn`  
-   * tqdm `conda install -c conda-forge tqdm`  
-   * torch `conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch`  
-   * torchinfo `conda install -c conda-forge torchinfo`  
