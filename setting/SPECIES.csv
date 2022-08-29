@@ -1,6 +1,6 @@
 ﻿code,generic_name,specific_epithet,common_name,target,song_type
 AA,Abroscopus,albogularis,棕面鶯,TRUE,1
-AC,Arborophila,crudigularis,臺灣山鷓鴣,FALSE,1
+AC,Arborophila,crudigularis,臺灣山鷓鴣,FALSE,"1,2"
 ACO,Aegithalos,concinnus,紅頭山雀,FALSE,1
 AM,Alcippe,morrisonia,繡眼畫眉,FALSE,1
 AT,Accipiter,trivirgatus,鳳頭蒼鷹,FALSE,1
@@ -38,7 +38,7 @@ PA,Periparus,ater,煤山雀,FALSE,1
 PAL,Pnoepyga,albiventer,鱗胸鷦眉,TRUE,1
 PAU,Phoenicurus,auroreus,黃尾鴝,FALSE,1
 PC,Picus,canus,綠啄木,FALSE,1
-PM,Parus,monticolus,青背山雀,TRUE,1
+PM,Parus,monticolus,青背山雀,TRUE,"1,2,3"
 PMU,Pomatorhinus,musicus,小彎嘴,FALSE,1
 PN,Psilopogon,nuchalis,五色鳥,FALSE,1
 PNI,Pyrrhula,nipalensis,褐鷽 ,FALSE,1
